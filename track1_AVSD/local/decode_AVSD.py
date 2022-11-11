@@ -33,8 +33,8 @@ def multi_process_write(utt, num_spk, preds, output_path, num_thread=32):
         p.join()
 
 def main(args):
-    if not os.path.exists(args.prob_dir+"/v_sd"):
-        os.makedirs(args.prob_dir+"/v_sd")
+    #if not os.path.exists(args.prob_dir+"/v_sd"):
+    #    os.makedirs(args.prob_dir+"/v_sd")
     if not os.path.exists(args.prob_dir+"/av_sd"):
             os.makedirs(args.prob_dir+"/av_sd")
     label_train = Label_Generate_From_RTTM(args.rttm_train)
