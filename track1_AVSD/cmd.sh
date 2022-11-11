@@ -11,5 +11,5 @@
 # or search for the string 'default_config' in utils/queue.pl or utils/slurm.pl.
 
 export train_cmd="run.pl"
-
-
+export decode_cmd=run.pl
+export cmd=run.pl
