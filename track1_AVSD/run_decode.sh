@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-stage=6
+stage=1
 gpu="0,1"  # Defining GPU
 set=dev  # Defining the set: train, dev, or eval.
 
