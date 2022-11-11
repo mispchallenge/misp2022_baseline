@@ -5,7 +5,8 @@ gpu="0,1"  # Defining GPU
 set=dev  # Defining the set: train, dev, or eval.
 
 . ./utils/parse_options.sh
-
+. ./cmd.sh
+. ./path.sh
 ################################################################################
 # single channel
 ################################################################################
