@@ -102,22 +102,22 @@ if [ $stage -le 6 ]; then
       #### If you did not execute the previous steps, you need to execute the content in the note
       #mkdir -p $vsd_prob_dir
       #mkdir -p $vsd_embedding_output_dir
-      CUDA_VISIBLE_DEVICES=$gpu python local/decode_VSD.py \
-          --model_path $vsd_model_path \
-          --prob_dir $vsd_prob_dir \
-          --embedding_output_dir $vsd_embedding_output_dir \
-          --lip_train_scp $lip_train_scp \
-          --rttm_train $rttm_train \
-          --lip_decode_scp $lip_decode_scp
+      #CUDA_VISIBLE_DEVICES=$gpu python local/decode_VSD.py \
+      #    --model_path $vsd_model_path \
+      #    --prob_dir $vsd_prob_dir \
+      #    --embedding_output_dir $vsd_embedding_output_dir \
+      #    --lip_train_scp $lip_train_scp \
+      #    --rttm_train $rttm_train \
+      #    --lip_decode_scp $lip_decode_scp
 
-      system=vsd
+      #system=vsd
 
-      local/prob_to_rttm.sh --system $system\
-          --set $set \
-          --prob_dir $vsd_prob_dir \
-          --oracle_vad $oracle_vad \
-          --rttm_dir $vsd_output_rttm_dir \
-          --oracle_rttm $oracle_rttm --fps 25
+      #local/prob_to_rttm.sh --system $system\
+      #    --set $set \
+      #    --prob_dir $vsd_prob_dir \
+      #    --oracle_vad $oracle_vad \
+      #    --rttm_dir $vsd_output_rttm_dir \
+      #    --oracle_rttm $oracle_rttm --fps 25
     
     for i in $( seq 0 5)
     do 
