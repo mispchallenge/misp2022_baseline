@@ -20,7 +20,7 @@ The speaker embedding module is illustrated in the middle row of Fig.1. To reduc
 ## Decoder module
 We firstly repeat the three embeddings for different times to solve the problem of different frame shift between audio and video. Then, we combine them to get the total embedding. In the decoding block, we use 2-layer BLSTM with projection to further extract the features. Finally, we use a 1-layer BLSTM with projection and the fully connected layer to get the speech or non-speech probabilities for each speaker respectively. All of BLSTM layers contained 896 cells. In the post-processing stage, we first perform thresholding with the probabilities to produce a preliminary result and adopt the same approaches in [previous work](https://ieeexplore.ieee.org/document/9747067). Furthermore, [DOVER-Lap](https://github.com/desh2608/dover-lap) is used to fuse the results of 6-channels audio.
 ## Training process
-First, we use the parameters of the pre-trained lipreading and train the V-VAD model with a learning rate of 10<sup>−4</sup>. Then,Second, we freeze the visual network
+First, we use the parameters of the pre-trained lipreading and train the V-VAD model with a learning rate of 10<sup>−4</sup>. Then, we freeze the visual network
 parameters and train the audio network and audio-visual decoding block on synchronized middle-ﬁeld audio and video with a learning rate of 10<sup>−4</sup>. Finally,we unfreeze the visual network parameters and train the whole network jointly on synchronized middle-ﬁeld audio and video with a learning rate of 10<sup>−5</sup>.
 ## Citation
 
