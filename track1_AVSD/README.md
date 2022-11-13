@@ -22,6 +22,17 @@ We firstly repeat the three embeddings for different times to solve the problem 
 ## Training process
 First, we use the parameters of the pre-trained lipreading and train the V-VAD model with a learning rate of 10<sup>−4</sup>. Then, we freeze the visual network
 parameters and train the audio network and audio-visual decoding block on synchronized middle-ﬁeld audio and video with a learning rate of 10<sup>−4</sup>. Finally,we unfreeze the visual network parameters and train the whole network jointly on synchronized middle-ﬁeld audio and video with a learning rate of 10<sup>−5</sup>.
+## Results
+
+| Systems    |  FA  |  MISS  |  SPKERR  |  DER  |
+| -----------|------|--------|----------|-------|
+|   ASD      | 0.01 |  19.88 |   11.36  | 31.25 |
+|   VSD      | 6.64 |   8.17 |    3.89  | 18.69 |
+|   **AVSD**     | **4.01** |   **5.86** |    **3.22**  | **13.09** |
+
+We use Diarization error rate (DER) as the evaluation index. The above results are measured on the far-field audio and video. For the ASD system, we use the [VBx method](https://github.com/BUTSpeechFIT/VBx). For the VSD system, we use the result from the visual embedding module. And the AVSD system is our method. At the same time, this AVSD result also serves as the baseline result of the MISP2022 Challenge Track 1 in development set. The baseline results of the evaluation set will be published together with the data according to the schedule.
+
+## Quick start
 ## Citation
 
 If you find this code useful in your research, please consider to cite the following papers:
