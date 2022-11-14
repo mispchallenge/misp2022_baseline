@@ -89,6 +89,7 @@ bash run.sh
 # change the number to start from different training stage
 (stage 4 ~ 8 are the decoding process using single channel audio; stage 9 ~ 10 are the decoding process fusing 6-channels audio)
 ```
+The lip ROI and ivector of the training set will be used in the decoding process. So you need to use `data_prepare.sh` to extract the lip ROI of the training set, and use stage 3 of `run.sh` to extract the ivector of the training set. We have prepared the [ivector](./exp/nnet3_cnceleb_ivector/ivectors_misp_train/) of the training set. You can directly use it.
 
 ## **Requirments**
 
