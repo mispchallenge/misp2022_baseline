@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-stage=0
+stage=1
 
 . ./utils/parse_options.sh
 . ./cmd.sh
@@ -11,19 +11,19 @@ stage=0
 ################################################################################
 misp_dir=                       # data path
 
-find detection_roi/train/far/lip | grep htk > scp_dir/train_far.lip.scp                    # Find the extracted lip ROIs
+find detection_roi/train/far/lip | grep htk > scp_dir/train_far.lip.scp                    # Find the extracted lip ROIs (data_prepare.sh is required first)
 cat /export/corpus/slwu/rttm/train_combined/*.rttm > scp_dir/train_far_RTTM.rttm           # Connect the rttm files to one file
 lip_train_scp=scp_dir/train_far.lip.scp                                                    # A file pointing to the training data lip ROIs
 rttm_train=scp_dir/train_far_RTTM.rttm                                                     # The oracle_RTTM file combining all training data sessions
 
-find detection_roi/dev/far/lip | grep htk > scp_dir/${set}_far.lip.scp                  # Find the extracted lip ROIs
+find detection_roi/dev/far/lip | grep htk > scp_dir/${set}_far.lip.scp     # Find the extracted lip ROIs (data_prepare.sh is required first)
 cat /export/corpus/misp2022/Released/rttm/dev_new_combined/*.rttm > scp_dir/dev_far_RTTM.rttm  # Connect the dev rttm files to one file
-lip_dev_scp=scp_dir/dev_far.lip.scp                                # A file pointing to the lip ROIs
-rttm_dev=scp_dir/dev_far_RTTM.rttm                                 # The oracle_RTTM file combining all sessions
+lip_dev_scp=scp_dir/dev_far.lip.scp                                        # A file pointing to the lip ROIs
+rttm_dev=scp_dir/dev_far_RTTM.rttm                                         # The oracle_RTTM file combining all sessions
 
 ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
 
-if [ $stage -le 0 ]; then  # VSD training
+if [ $stage -le 1 ]; then  # VSD training
 
     python local/train_VSD.py --project VSD_MISP2022_Far \
                        --file_train_path $lip_train_scp \
@@ -35,7 +35,7 @@ fi
 # Find best model:
 best_model=model/pretrained/conformer_v_sd_2.model
 
-if [ $stage -le 1 ]; then  # Extract train set frame-level:
+if [ $stage -le 2 ]; then  # Extract train set frame-level:
 
     python local/extract_visual_embedding.py --model_path $best_model \
                                       --output_dir output/visual_embedding \
@@ -46,7 +46,7 @@ if [ $stage -le 1 ]; then  # Extract train set frame-level:
 
 fi
 
-if [ $stage -le 2 ]; then  # Audio and speaker embedding extract
+if [ $stage -le 3 ]; then  # Audio and speaker embedding extract
 
     mkdir -p data/misp_train
     # Prepare data dir
@@ -81,7 +81,7 @@ if [ $stage -le 2 ]; then  # Audio and speaker embedding extract
 
 fi
 
-if [ $stage -le 3 ]; then  # AVSD training
+if [ $stage -le 4 ]; then  # AVSD training
 
     # Here we used visual frame-level embedding extracted in VSD training steps
     # We didn't evaluate with dev set when training. If you want to evaluate each saved
@@ -106,13 +106,13 @@ gpu="0,1"  # Defining GPU
 set=dev  # Defining the set: dev, or eval.
 ch=0
 
-find detection_roi/${set}/far/lip | grep htk > scp_dir/${set}_far.lip.scp                  # Find the extracted lip ROIs
+find detection_roi/${set}/far/lip | grep htk > scp_dir/${set}_far.lip.scp     # Find the extracted lip ROIs (data_prepare.sh is required first)
 cat /export/corpus/misp2022/Released/rttm/${set}/*.rttm > scp_dir/dev_far_RTTM.rttm   # Connect the rttm files to one file
-lip_decode_scp=scp_dir/${set}_far.lip.scp                                 # A file pointing to the lip ROIs
-oracle_rttm=scp_dir/${set}_far_RTTM.rttm                                # The oracle_RTTM file combining all sessions
-oracle_vad=scp_dir/${set}_far_timestamp.lab                           # The oracle_VAD timestamp file combining all sessions
-data=MISP2022_${set}_Far${ch}_WPE                                      # Defining the data name
-wav_dir=wpe/${set}/                                                                # Defining the path of audio after WPE
+lip_decode_scp=scp_dir/${set}_far.lip.scp                                     # The file pointing to the lip ROIs
+oracle_rttm=scp_dir/${set}_far_RTTM.rttm                                      # The oracle_RTTM file combining all sessions
+oracle_vad=scp_dir/${set}_far_timestamp.lab                                   # The oracle_VAD timestamp file combining all sessions
+data=MISP2022_${set}_Far${ch}_WPE                                             # Defining the data name
+wav_dir=wpe/${set}/                                                           # Defining the path of audio after WPE
 
 vsd_model_path=model/pretrained/conformer_v_sd_2.model   # VSD model
 vsd_prob_dir=exp/result_vsd/$set/prob
@@ -130,7 +130,7 @@ avsd_output_rttm_dir=exp/result_avsd/$data/rttm
 # single channel
 ################################################################################
 
-if [ $stage -le 4 ]; then     # VSD decoder
+if [ $stage -le 5 ]; then     # VSD decoder
     mkdir -p $vsd_prob_dir
     mkdir -p $vsd_embedding_output_dir
     CUDA_VISIBLE_DEVICES=$gpu python local/decode_VSD.py \
@@ -142,7 +142,7 @@ if [ $stage -le 4 ]; then     # VSD decoder
         --lip_decode_scp $lip_decode_scp
 fi
 
-if [ $stage -le 5 ]; then  # get RTTM file and DER
+if [ $stage -le 6 ]; then  # get RTTM file and DER
     system=vsd
     local/prob_to_rttm.sh --system $system\
                           --set $set \
@@ -152,7 +152,7 @@ if [ $stage -le 5 ]; then  # get RTTM file and DER
                           --oracle_rttm $oracle_rttm --fps 25
 fi
 
-if [ $stage -le 6 ]; then  # extract ivector
+if [ $stage -le 7 ]; then  # extract ivector
     mkdir -p $ivector_dir
     mkdir -p data/$data
     find $wav_dir | grep -E "_${ch}\.wav" > data/$data/wav.list
@@ -166,7 +166,7 @@ if [ $stage -le 6 ]; then  # extract ivector
         --max_speaker 6 --affix _VSD
 fi
 
-if [ $stage -le 7 ]; then  # AVSD decoder
+if [ $stage -le 8 ]; then  # AVSD decoder
     
     CUDA_VISIBLE_DEVICES=0,1 python local/decode_AVSD.py \
         --vsd_model_path $vsd_model_path \
@@ -180,7 +180,7 @@ if [ $stage -le 7 ]; then  # AVSD decoder
         --prob_dir $avsd_prob_dir
 fi
 system=avsd
-if [ $stage -le 8 ]; then  # get RTTM file and DER
+if [ $stage -le 9 ]; then  # get RTTM file and DER
     local/prob_to_rttm.sh --system $system\
                     --set $set \
                     --prob_dir $avsd_prob_dir/av_sd \
@@ -195,7 +195,7 @@ fi
 # Fusion of 6-channels using dover-lap
 ################################################################################
 
-if [ $stage -le 9 ]; then
+if [ $stage -le 10 ]; then
 
       #### If you did not execute the previous steps, you need to execute the content in the note
       #mkdir -p $vsd_prob_dir
@@ -262,7 +262,7 @@ if [ $stage -le 9 ]; then
     done
 fi
 
-if [ $stage -le 10 ]; then  # Utilize dover_lap to fuse multi-channel results
+if [ $stage -le 11 ]; then  # Utilize dover_lap to fuse multi-channel results
     data=MISP2022_${set}_Far_WPE
     mkdir -p exp/result_avsd/${data}-Fusion
     dover-lap exp/result_avsd/${data}-Fusion/fusion exp/result_avsd/MISP2022_${set}_Far*_WPE/rttm/rttm_th0.65_pp_oraclevad
