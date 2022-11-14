@@ -32,7 +32,31 @@ parameters and train the audio network and audio-visual decoding block on synchr
 
 We use Diarization error rate (DER) as the evaluation index. The above results are measured on the far-field audio and video. For the ASD system, we use the [VBx method](https://github.com/BUTSpeechFIT/VBx). For the VSD system, we use the result from the visual embedding module. And the AVSD system is our method. At the same time, this AVSD result also serves as the baseline result of the MISP2022 Challenge Track 1 in development set. The baseline results of the evaluation set will be published together with the data according to the schedule.
 
-## Quick start
+# Quick start
+
+- **Add file execution permissions**
+```
+chmod +x -R /export/corpus/exp/av_diarization/misp2022_baseline/track1_AVSD/  # (your code path)
+```
+- **Data prepare**
+```
+bash data_prepare.sh   # (Please change your file path in the script)
+```
+- **Setting kaldi**
+```
+--- cmd.sh ---
+export train_cmd=run.pl
+export decode_cmd=run.pl
+export cmd=run.pl
+
+--- path.sh ---
+export KALDI_ROOT=`pwd`/../../..      #  # Defining Kaldi root directory
+[ -f $KALDI_ROOT/tools/env.sh ] && . $KALDI_ROOT/tools/env.sh
+export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/irstlm/bin/:$PWD:$PATH
+[ ! -f $KALDI_ROOT/tools/config/common_path.sh ] && echo >&2 "The standard file $KALDI_ROOT/tools/config/common_path.sh is not present -> Exit!" && exit 1
+. $KALDI_ROOT/tools/config/common_path.sh
+export LC_ALL=C
+```
 ## Citation
 
 If you find this code useful in your research, please consider to cite the following papers:
