@@ -81,6 +81,7 @@ Please put the downloaded model into model/pretrain/
 ```
 
 - **Decoding**
+
 If you have downloaded the pre-trained models, you can directly do the decoding process.
 ```
 bash run.sh 
