@@ -36,11 +36,11 @@ We use Diarization error rate (DER) as the evaluation index. The above results a
 
 - **Add file execution permissions**
 ```
-chmod +x -R /export/corpus/exp/av_diarization/misp2022_baseline/track1_AVSD/  # (your code path)
+chmod +x -R /export/corpus/exp/av_diarization/misp2022_baseline/track1_AVSD/  # (Your code path)
 ```
 - **Data prepare**
 ```
-bash data_prepare.sh   # (Please change your file path in the script)
+bash data_prepare.sh   # (Please change your file path in the script. Note that WPE is not necessary for training sets)
 ```
 - **Setting kaldi**
 ```
@@ -50,12 +50,28 @@ export decode_cmd=run.pl
 export cmd=run.pl
 
 --- path.sh ---
-export KALDI_ROOT=`pwd`/../../..      #  # Defining Kaldi root directory
+export KALDI_ROOT=`pwd`/../../..        # Defining Kaldi root directory
 [ -f $KALDI_ROOT/tools/env.sh ] && . $KALDI_ROOT/tools/env.sh
 export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/irstlm/bin/:$PWD:$PATH
 [ ! -f $KALDI_ROOT/tools/config/common_path.sh ] && echo >&2 "The standard file $KALDI_ROOT/tools/config/common_path.sh is not present -> Exit!" && exit 1
 . $KALDI_ROOT/tools/config/common_path.sh
 export LC_ALL=C
+```
+- **Training**
+```
+--- run.sh ---
+```
+- **Pre trained model**
+
+If you don't want to perform the whole training process, you can download our pre trained model:
+```
+conformer_v_sd_2.model
+av_diarization_3.model
+```
+The link of Google drive is: https://drive.google.com/drive/folders/1kh40NNBW84kODM0PrWvYLwDCjuqpKqj7?usp=sharing
+- **Decoding**
+```
+--- run.sh ---
 ```
 ## Citation
 
