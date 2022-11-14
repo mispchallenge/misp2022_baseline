@@ -9,7 +9,7 @@ Weighted Prediction Error(WPE) dereverberation is used to reduce the reverberati
 
 In the dataset, we provide the position detection results of the face and lips, which can be used to extract the ROI of the face or lips (only the lips are used here). The extracted lip ROI size is 96 × 96 (*W × H*) .
 
-You can run `data_prepare.sh` to perform the above two steps. (You need to modify the file path in the script).
+You can run `data_prepare.sh` to perform the above two steps.
 
 ## Visual embedding module
 The visual embedding module is illustrated in the top row of Fig.1. On the basis of the original [lipreading model](https://github.com/mpc001/Lipreading_using_Temporal_Convolutional_Networks), we add three conformer blocks with 256 encoder dims, 4 attention heads, 32 conv kernel size and a 256-cell BLSTM to compute the visual embedding for speakers. The whole network can be regarded as visual voice activity detection (V-VAD) module. After pre-training the visual network as a V-VAD task, V-embeddings are equipped with capability that represent the states of speaking or silent. By feeding the embedding into the fully connected layers, we can get the probability of whether a speaker speaks in each frame. Combining the results of each speaker, we will get the initial diarization results.
