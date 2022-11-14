@@ -104,6 +104,7 @@ fi
 
 gpu="0,1"  # Defining GPU
 set=dev  # Defining the set: dev, or eval.
+ch=0
 
 find detection_roi/${set}/far/lip | grep htk > scp_dir/${set}_far.lip.scp                  # Find the extracted lip ROIs
 cat /export/corpus/misp2022/Released/rttm/${set}/*.rttm > scp_dir/dev_far_RTTM.rttm   # Connect the rttm files to one file
