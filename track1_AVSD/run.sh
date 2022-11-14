@@ -33,7 +33,7 @@ if [ $stage -le 0 ]; then  # VSD training
 fi
 
 # Find best model:
-best_model=model/pretrain/conformer_v_sd_2.model
+best_model=model/pretrained/conformer_v_sd_2.model
 
 if [ $stage -le 1 ]; then  # Extract train set frame-level:
 
@@ -114,7 +114,7 @@ oracle_vad=scp_dir/${set}_far_timestamp.lab                           # The orac
 data=MISP2022_${set}_Far${ch}_WPE                                      # Defining the data name
 wav_dir=wpe/${set}/                                                                # Defining the path of audio after WPE
 
-vsd_model_path=model/pretrain/conformer_v_sd_2.model   # VSD model
+vsd_model_path=model/pretrained/conformer_v_sd_2.model   # VSD model
 vsd_prob_dir=exp/result_vsd/$set/prob
 vsd_embedding_output_dir=exp/result_vsd/$set/vemb
 vsd_output_rttm_dir=exp/result_vsd/$set/rttm
@@ -122,7 +122,7 @@ vsd_output_rttm_dir=exp/result_vsd/$set/rttm
 ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
 ivector_train=$ivector_dir/ivectors_misp_train/ivectors_spk.txt  # ivector of training data, this can be replace with the training set ivector you extracted in stage 2
 
-avsd_model_path=model/pretrain/av_diarization_3.model   # AVSD model
+avsd_model_path=model/pretrained/av_diarization_3.model   # AVSD model
 avsd_prob_dir=exp/result_avsd/$data/prob
 avsd_output_rttm_dir=exp/result_avsd/$data/rttm
 
