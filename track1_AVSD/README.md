@@ -40,7 +40,7 @@ chmod +x -R /export/corpus/exp/av_diarization/misp2022_baseline/track1_AVSD/  # 
 ```
 - **Data prepare**
 ```
-bash data_prepare.sh   # (Please change your file path in the script. Note that WPE is not necessary for training sets)
+bash data_prepare.sh   # (Please change your file path in the script. Note that WPE is not necessary for training set)
 ```
 - **Setting kaldi**
 ```
