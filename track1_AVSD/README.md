@@ -57,18 +57,26 @@ export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/irstlm/b
 . $KALDI_ROOT/tools/config/common_path.sh
 export LC_ALL=C
 ```
+
+- **Pre-trained model**
+
+There are three pre-trained models. Conformer_v_sd_2.model and av_diarization_3.model are the pre-trained models of visual embedding module and audio-visual module respectively. You can choose whether to download them. If you do not want to conduct the training process but directly decode, you can download these two models.
+
+Lipreading_LRW.pt is the pre-trained model of lipreading. If you want to conduct the training process, you must download this model.
+
+Please put the downloaded model into model/pretrain/
+```
+conformer_v_sd_2.model
+av_diarization_3.model
+lipreading_LRW.pt
+```
+The link of Google drive is: https://drive.google.com/drive/folders/1kh40NNBW84kODM0PrWvYLwDCjuqpKqj7?usp=sharing
+
 - **Training**
 ```
 --- run.sh ---
 ```
-- **Pre trained model**
 
-If you don't want to perform the whole training process, you can download our pre trained model:
-```
-conformer_v_sd_2.model
-av_diarization_3.model
-```
-The link of Google drive is: https://drive.google.com/drive/folders/1kh40NNBW84kODM0PrWvYLwDCjuqpKqj7?usp=sharing
 - **Decoding**
 ```
 --- run.sh ---
