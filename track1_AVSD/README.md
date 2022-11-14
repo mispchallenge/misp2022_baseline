@@ -73,7 +73,31 @@ The link of Google drive is: https://drive.google.com/drive/folders/1kh40NNBW84k
 ```
 --- run.sh ---
 ```
-## Citation
+## **Requirments**
+
+- Kaldi
+- Python Package:
+
+  torch
+  
+  nbformat
+  
+  argparse
+  
+  tqdm
+  
+  opencv-python
+  
+  eniops
+  
+  scipy
+  
+  prefetch_generator
+  
+- [Nare_wpe](https://github.com/fgnt/nara_wpe)
+- [Dover-lap](https://github.com/desh2608/dover-lap)
+- [Lipreading using Temporal Convolutional Networks](https://github.com/mpc001/Lipreading_using_Temporal_Convolutional_Networks)
+# Citation
 
 If you find this code useful in your research, please consider to cite the following papers:
 
