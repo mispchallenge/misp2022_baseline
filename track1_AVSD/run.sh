@@ -106,7 +106,7 @@ gpu="0,1"  # Defining GPU
 set=dev  # Defining the set: dev, or eval.
 
 find detection_roi/${set}/far/lip | grep htk > scp_dir/${set}_far.lip.scp                  # Find the extracted lip ROIs
-cat /export/corpus/misp2022/Released/rttm/dev_new_combined/*.rttm > scp_dir/dev_far_RTTM.rttm   # Connect the rttm files to one file
+cat /export/corpus/misp2022/Released/rttm/${set}/*.rttm > scp_dir/dev_far_RTTM.rttm   # Connect the rttm files to one file
 lip_decode_scp=scp_dir/${set}_far.lip.scp                                 # A file pointing to the lip ROIs
 oracle_rttm=scp_dir/${set}_far_RTTM.rttm                                # The oracle_RTTM file combining all sessions
 oracle_vad=scp_dir/${set}_far_timestamp.lab                           # The oracle_VAD timestamp file combining all sessions
