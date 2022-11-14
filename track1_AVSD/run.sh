@@ -18,8 +18,8 @@ rttm_train=scp_dir/train_far_RTTM.rttm                                          
 
 find detection_roi/dev/far/lip | grep htk > scp_dir/${set}_far.lip.scp                  # Find the extracted lip ROIs
 cat /export/corpus/misp2022/Released/rttm/dev_new_combined/*.rttm > scp_dir/dev_far_RTTM.rttm  # Connect the dev rttm files to one file
-lip_decode_scp=scp_dir/dev_far.lip.scp                                # A file pointing to the lip ROIs
-oracle_rttm=scp_dir/dev_far_RTTM.rttm                                 # The oracle_RTTM file combining all sessions
+lip_dev_scp=scp_dir/dev_far.lip.scp                                # A file pointing to the lip ROIs
+rttm_dev=scp_dir/dev_far_RTTM.rttm                                 # The oracle_RTTM file combining all sessions
 
 ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
 
@@ -28,8 +28,8 @@ if [ $stage -le 0 ]; then  # VSD training
     python local/train_VSD.py --project VSD_MISP2022_Far \
                        --file_train_path $lip_train_scp \
                        --rttm_train_path $rttm_train \
-                       --file_dev_path $lip_decode_scp \
-                       --rttm_dev_path $oracle_rttm
+                       --file_dev_path $lip_dev_scp \
+                       --rttm_dev_path $rttm_dev
 fi
 
 # Find best model:
