@@ -81,9 +81,15 @@ Please put the downloaded model into model/pretrain/
 ```
 
 - **Decoding**
+If you have downloaded the pre-trained models, you can directly do the decoding process.
 ```
---- run.sh ---
+bash run.sh 
+# options:
+		       --stage 4
+# change the number to start from different training stage
+(stage 4 ~ 8 are the decoding process using single channel audio; stage 9 ~ 10 are the decoding process fusing 6-channels audio)
 ```
+
 ## **Requirments**
 
 - Kaldi
