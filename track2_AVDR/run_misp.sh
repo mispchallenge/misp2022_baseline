@@ -410,7 +410,8 @@ fi
 #     for y in far ; do
 #       result_decode_directory=data/${x}_${y}_audio/Result
 #       text_directory=data/${x}_${y}_audio/Ground_Truth
-#       ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory
+#       score_file=data/${x}_${y}_audio/score.txt
+#       ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory -f $score_file=data/${x}_${y}_audio/score.txt
 #     done
 #   done
 # fi
