@@ -19,33 +19,21 @@ def is_overlap(seg1, seg2):
 
 
 def collate_fn(sample_batch):
-    '''
-        returns:
-        audio_fea: [T, F]
-        audio_embedding: [num_speaker, video_embedding]
-        video_fea: [num_speaker, T, 96, 96]
-        video_label: [num_speaker, T, C]
-        mask_label: [num_speaker, T, C]
-        return audio_fea, audio_embedding, video_fea, video_label, mask_label
-    '''
     # audio_fea, audio_embedding, video_embedding, mask_label
-    batchsize = len(sample_batch)
-    num_speaker, T, C = sample_batch[0][4].shape
+    num_speaker = sample_batch[0][1].shape[0]
     speaker_index = np.array(range(num_speaker))
     np.random.shuffle(speaker_index)
     sample_batch = sorted(sample_batch, key=lambda x: x[0].shape[0], reverse=True)
     audio_fea = [torch.from_numpy(x[0].astype(np.float32)) for x in sample_batch]
     audio_embedding = [torch.from_numpy(x[1][speaker_index].astype(np.float32)) for x in sample_batch]
-    video_fea = [torch.from_numpy(x[2][speaker_index].astype(np.float32)) for x in sample_batch]
-    video_label = [torch.from_numpy(x[3][speaker_index].astype(np.float32)) for x in sample_batch]
-    mask_label = [torch.from_numpy(x[4][speaker_index].astype(np.float32)) for x in sample_batch]
+    video_embedding = [torch.from_numpy(x[2][speaker_index].astype(np.float32)) for x in sample_batch]
+    mask_label = [torch.from_numpy(x[3][speaker_index].astype(np.float32)) for x in sample_batch]
     nframe = [x.shape[0]//1 for x in audio_fea]
     audio_fea = pad_sequence(audio_fea, batch_first=True, padding_value=0.0).transpose(1, 2)
     audio_embedding = torch.stack(audio_embedding)
-    video_fea = pad_sequence(video_fea, batch_first=True, padding_value=0.0)
-    video_label = torch.stack(video_label).reshape(batchsize*num_speaker*T//4, C)
+    video_embedding = pad_sequence(video_embedding, batch_first=True, padding_value=0.0)
     mask_label = torch.cat(mask_label, dim=1) # Time_Batch1 + Time_Batch2 + ... + Time_BatchN
-    return audio_fea, audio_embedding, video_fea, video_label, mask_label, nframe
+    return audio_fea, audio_embedding, video_embedding, mask_label, nframe 
 
 
 def decoder_collate_fn(sample_batch):
