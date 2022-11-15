@@ -267,11 +267,11 @@ if [ $stage -le 11 ]; then  # Utilize dover_lap to fuse multi-channel results
     data=MISP2022_${set}_Far_WPE
     mkdir -p exp/result_avsd/${data}-Fusion
     dover-lap exp/result_avsd/${data}-Fusion/fusion exp/result_avsd/MISP2022_${set}_Far*_WPE/rttm/rttm_th0.65_pp_oraclevad
-    python local/rttm_match.py exp/result_avsd/MISP2022_${set}_Far0_WPE/rttm/rttm_th0.65_pp_oraclevad \
-                               exp/result_avsd/$data-Fusion/fusion \
-                               exp/result_avsd/$data-Fusion/fusion.rttm
     system=avsd
     i=fusion
     rttm_dir=exp/result_avsd/${data}-Fusion
-    local/analysis_diarization.sh $system $i $set $oracle_rttm $rttm_dir/fusion.rttm | grep ALL
+    local/analysis_diarization.sh $system $i $set $oracle_rttm $rttm_dir/fusion | grep ALL
+    python local/rttm_match.py exp/result_avsd/MISP2022_${set}_Far0_WPE/rttm/rttm_th0.65_pp_oraclevad \   # local ID to global ID
+                               exp/result_avsd/$data-Fusion/fusion \
+                               exp/result_avsd/$data-Fusion/fusion.rttm
 fi
