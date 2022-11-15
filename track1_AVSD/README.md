@@ -64,7 +64,7 @@ There are three pre-trained models.
 
 The conformer_v_sd_2.model and av_diarization_3.model are the pre-trained models of visual embedding module and audio-visual module respectively. You can choose whether to download them. Specifically, if you do not want to conduct the training process but directly decode, you can download these two models.
 
-Lipreading_LRW.pt is the pre-trained model of lipreading. The training process will use it. Therefore, if you want to conduct the training process, you must download this model. And if you use this model, please refer to the paper at the bottom of this link: https://github.com/mpc001/Lipreading_using_Temporal_Convolutional_Networks
+Lipreading_LRW.pt is the pre-trained model of lipreading. The training process will use it. Therefore, if you want to conduct the training process, you must download this model. And if you use this model, please cite the paper at the bottom of this link: https://github.com/mpc001/Lipreading_using_Temporal_Convolutional_Networks
 
 ```
 conformer_v_sd_2.model
