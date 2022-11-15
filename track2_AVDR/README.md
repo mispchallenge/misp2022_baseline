@@ -11,3 +11,9 @@ Weighted Prediction Error(WPE) dereverberation and BeamformIt are used to reduce
 - **Lip ROI extraction**
 
 In the dataset, we provide the position detection results of the face and lips, which can be used to extract the ROI of the face or lips (only the lips are used here). The extracted lip ROI size is 96 × 96 (*W × H*) .
+
+## AVSD Module Training
+
+## AVSR Module Training
+
+## Joint Decoding
