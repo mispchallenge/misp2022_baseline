@@ -106,6 +106,8 @@ The lip ROI and ivector of the training set will be used in the decoding process
   
   argparse
   
+  numpy
+  
   tqdm
   
   opencv-python
