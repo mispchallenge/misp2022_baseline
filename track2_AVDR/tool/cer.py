@@ -64,7 +64,7 @@ def gendict(src_file,tgt_file):
     # speakers may miss
     for key in tgt_dic.keys():   
         if key not in src_dic.keys():
-            src_dic[key] = '' 
+            src_dic[key] = [] 
 
     return src_dic,tgt_dic
 
@@ -84,7 +84,7 @@ def gendict_new(src_content,tgt_content):
     # speakers may miss
     for key in tgt_dic.keys():   
         if key not in src_dic.keys():
-            src_dic[key] = '' 
+            src_dic[key] = [] 
 
     return src_dic,tgt_dic
 
