@@ -1,1 +1,1 @@
-[Baseline_System_Last.pdf](https://github.com/mispchallenge/misp2022_baseline/files/10008979/Baseline_System_Last.pdf)
+![Baseline_System_Last](https://user-images.githubusercontent.com/88126124/201822323-d5b76a40-dd33-44f9-8a04-45d43f414965.png)
