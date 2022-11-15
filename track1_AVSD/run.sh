@@ -88,7 +88,8 @@ if [ $stage -le 4 ]; then  # AVSD training
     # model, run the following decoding scripts.
     # Default batchsize is 48 on 4 3090 GPUs (memory: 24GB)
     # With 6 channels RAW (without any preprocessing), WPE and Enhanced audio, the 3rd epoch model is the best in previous experiments.
-
+    
+    audio_type="RAW"
     python local/train_AVSD.py --project AVSD_MISP2022_Far \
                         --train_audio_fea_dir fbank/HTK/misp_train_cmn_slide \
                         --train_speaker_embedding $ivector_dir/ivectors_misp_train_oracle/ivectors_spk.txt \
