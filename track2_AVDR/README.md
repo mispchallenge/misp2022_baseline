@@ -45,7 +45,8 @@ T<sub>j</sub><sup>start</sup>: the start time of the j-th utterance for SPK<sub>
 T<sub>j</sub><sup>dur</sup>: the duration of the j-th utterance for SPK<sub>i</sub>
 During the inference, the RTTM file is used for segmenting audio and video data in AVSR module.
 
-
+If speaker IDs of the final decoding results are global, you only need to caculate the CER.
+If you run your own model and get the local speaker IDs, you need to caculate the cpCER.
 
 ## Results
 
