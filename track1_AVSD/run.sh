@@ -16,12 +16,12 @@ cat /export/corpus/slwu/rttm/train_combined/*.rttm > scp_dir/train_far_RTTM.rttm
 lip_train_scp=scp_dir/train_far.lip.scp                                                    # A file pointing to the training data lip ROIs
 rttm_train=scp_dir/train_far_RTTM.rttm                                                     # The oracle_RTTM file combining all training data sessions
 
-find detection_roi/dev/far/lip | grep htk > scp_dir/dev_far.lip.scp     # Find the extracted lip ROIs (data_prepare.sh is required first)
+find detection_roi/dev/far/lip | grep htk > scp_dir/dev_far.lip.scp        # Find the extracted lip ROIs (data_prepare.sh is required first)
 cat /export/corpus/misp2022/Released/rttm/dev_new_combined/*.rttm > scp_dir/dev_far_RTTM.rttm  # Connect the dev rttm files to one file
 lip_dev_scp=scp_dir/dev_far.lip.scp                                        # A file pointing to the lip ROIs
 rttm_dev=scp_dir/dev_far_RTTM.rttm                                         # The oracle_RTTM file combining all sessions
 
-ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
+ivector_dir=exp/nnet3_cnceleb_ivector   # ivector output path
 
 if [ $stage -le 1 ]; then  # VSD training
 
@@ -115,12 +115,12 @@ oracle_vad=scp_dir/${set}_far_timestamp.lab                                   # 
 data=MISP2022_${set}_Far${ch}_WPE                                             # Defining the data name
 wav_dir=wpe/${set}/                                                           # Defining the path of audio after WPE
 
-vsd_model_path=model/pretrained/conformer_v_sd_2.model   # VSD model
+vsd_model_path=model/pretrained/conformer_v_sd_2.model    # VSD model
 vsd_prob_dir=exp/result_vsd/$set/prob
 vsd_embedding_output_dir=exp/result_vsd/$set/vemb
 vsd_output_rttm_dir=exp/result_vsd/$set/rttm
 
-ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
+ivector_dir=exp/nnet3_cnceleb_ivector                     # ivector output path
 ivector_train=$ivector_dir/ivectors_misp_train/ivectors_spk.txt  # ivector of training data, this can be replace with the training set ivector you extracted in stage 3
 
 avsd_model_path=model/pretrained/av_diarization_3.model   # AVSD model
