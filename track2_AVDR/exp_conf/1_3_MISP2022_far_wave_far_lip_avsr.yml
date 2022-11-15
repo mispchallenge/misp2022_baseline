@@ -1,0 +1,184 @@
+model:
+  network_name: avsr
+  network_setting:
+    extract_feature: False
+    skip_convert: False
+    input_types: [ wave, frames ]
+    extractor_types: [ fbank, gray_crop_flip ]
+    extractor_settings:
+      - n_fft: 400
+        hop_length: 160
+        win_type: hamming
+        win_length: 400
+        cmvn: feature/misp2022_avsr/cmvn_wave/cmvn_fbank_htk_far.pt
+        f_min: 0
+        f_max: 8000
+        n_mels: 40
+        sample_rate: 16000
+        norm: slaney
+        preemphasis_coefficient: 0.97
+        vtln: False
+        vtln_low: 0
+        vtln_high: 8000
+        vtln_warp_factor: 1.
+      - channel_input: bgr
+        size: [ 88, 88 ]
+        random: True
+        skip_gray: False
+    frontend_types: [ conv1d, conv3d ]
+    frontend_settings:
+      - out_channels: 64
+        conv1d_kernel: 1
+        conv1d_stride: 1
+        act_type: prelu
+      - out_channels: 64
+        conv3d_kernel: [ 5, 7, 7 ]
+        conv3d_stride: [ 1, 2, 2 ]
+        act_type: prelu
+        pool3d_kernel: [ 1, 3, 3 ]
+        pool3d_stride: [ 1, 2, 2 ]
+    backbone_types: [ resnet1d, resnet2d ]
+    backbone_settings:
+      - block_type: basic1d
+        block_num: 2
+        act_type: prelu
+        hidden_channels: [ 64, 128, 256, 512 ]
+        stride: [ 1, 1, 1, 1 ]
+        expansion: 1
+        downsample_type: avgpool
+      - block_type: basic2d
+        block_num: 2
+        act_type: prelu
+        hidden_channels: [ 64, 128, 256, 512 ]
+        stride: [ 1, 2, 2, 2 ]
+        expansion: 1
+        downsample_type: avgpool
+    fuse_type: tcn
+    fuse_setting:
+      hidden_channels: [ 768, 768, 768, 768 ]
+      kernels_size: [ 3, 5, 7 ]
+      dropout: 0.2
+      act_type: prelu
+      dwpw: False
+      downsample_type: norm
+    backend_type: tcn
+    backend_setting:
+      hidden_channels: [ 768, 768, 768, 768 ]
+      num_classes: 9032
+      kernel_size: [ 3, 5, 7 ]
+      dropout: 0.2
+      act_type: prelu
+      dwpw: False
+      downsample_type: norm
+      consensus_type: none
+      consensus_setting: { }
+
+data:
+  loader_output:
+    items: &input_items [ far_wave, far_lip, far_classification_9032_0.01 ]
+    shapes: &input_shapes [ [ 0 ], [ 0, 96, 96, 3 ], [ 0 ]]
+    pad_values: &input_pad_values [ 0, 0, 9032 ]
+    batch_size: &batch_size 2
+    max_batch_size: &max_batch_size 32
+  model_input: 
+    items: {'wave': 0, 'frames': 2, 'length': 1}
+    gpu_items: [ wave, frames ]
+  model_output:
+    items: [ posteriori ]
+    store_items: {'posteriori': 0}
+    store_item2length: {'posteriori': 1}
+  loss_input:
+    items_from_loader: {'label': 4, 'length': 5}
+    items_from_model: {'net_output': 0}
+    gpu_items: [ label ]
+  train:
+    annotate:
+      - feature/misp2022_avsr/train_far.json
+    repeat: 1
+    max_duration: 100
+    hop_duration: 6
+    # duration_factor: None
+    # deleted_keys: None
+    items: *input_items
+    # key_output: False
+    dynamic: True
+    batch_size: *batch_size
+    max_batch_size: *max_batch_size
+    bucket_length_multiplier: 1.1
+    shuffle: True
+    drop_last: False
+    num_workers: 4
+    pin_memory: False
+    target_shape: *input_shapes
+    pad_value: *input_pad_values
+  dev:
+    annotate:
+      - feature/misp2022_avsr/dev_far.json
+    repeat: 1
+    max_duration: 100
+    hop_duration: 6
+    # duration_factor: None
+    # deleted_keys: None
+    items: *input_items
+    # key_output: False
+    dynamic: True
+    batch_size: *batch_size
+    max_batch_size: *max_batch_size
+    bucket_length_multiplier: 1.1
+    shuffle: True
+    drop_last: False
+    num_workers: 4
+    pin_memory: False
+    target_shape: *input_shapes
+    pad_value: *input_pad_values
+  dev_inference:
+    annotate:
+      - feature/misp2022_avsr/dev_far_inference.json
+    repeat: 1
+    max_duration: 100
+    hop_duration: 6
+    # duration_factor: None
+    # deleted_keys: None
+    items: [ far_wave, far_lip ]
+    # key_output: False
+    dynamic: True
+    batch_size: *batch_size
+    max_batch_size: *max_batch_size
+    bucket_length_multiplier: 1.1
+    shuffle: True
+    drop_last: False
+    num_workers: 4
+    pin_memory: False
+    target_shape: [ [ 0 ], [ 0, 96, 96, 3 ] ]
+    pad_value: [ 0, 0 ]
+
+
+
+optimizer:
+  optimizer_type: Adam
+  group_num: 1
+  force_lr: False
+  common_setting:
+    lr: 0.0003
+    betas: [0.9, 0.999]
+    eps: 0.00000001
+    weight_decay: 0.0001
+    amsgrad: False
+
+scheduler:
+  scheduler_type: cosine
+  scheduler_setting:
+    t_max: 100
+    min_lr: 0.
+    last_epoch: -1
+
+loss:
+  loss_type: ce
+  loss_setting:
+    label_type: token
+    cal_acc: True
+    ignore_idx: 9032
+    reduction: mean
+
+gradient:
+  grad_clip: 5.
