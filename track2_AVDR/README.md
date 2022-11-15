@@ -36,14 +36,13 @@ The training of AVSR module uses the oracle diarization results.
     Based on the tied-triphone state alignments from GMM, DNN is configured and trained to replace GMM. The input features are 40-dimensional FBank features with cepstral normalization and the 96 × 96 (*W × H*) lip ROI.
 
 ## Inference
-The RTTM file as the output of the AVSD module contains the information of the Session, SPK<sup>−4</sup>, Tstart, and Tdur.
+The RTTM file as the output of the AVSD module contains the information of the Session<sub>k</sub>, SPK<sub>i</sub>, T<sup>start</sup>, and T<sup>dur</sup>.
 
 where:
-
-Sessionk: k-th session
-SPKi: i-th speaker
-Tjstart: the start time of the j-th utterance for SPKi
-Tjdur: the duration of the j-th utterance for SPKi
+Session<sub>k</sub>: k-th session
+SPK<sub>i</sub>: i-th speaker
+T<sub>j</sub><sup>start</sup>: the start time of the j-th utterance for SPK<sub>i</sub>
+T<sub>j</sub><sup>dur</sup>: the duration of the j-th utterance for SPK<sub>i</sub>
 During the inference, the RTTM file is used for segmenting audio and video data in AVSR module.
 
 
@@ -55,7 +54,7 @@ During the inference, the RTTM file is used for segmenting audio and video data 
 | ASD+ASR       | 80.44        |
 | VSD+ASR       | 71.13        |
 | VSD+AVSR      | 66.79        |
-| **AVSD+AVSR**     | 66.07        |
+| **AVSD+AVSR**     | **66.07**        |
 
 The AVSD+AVSR model is our AVDR baseline system.
 
