@@ -50,7 +50,7 @@ data_roi=data/local/roi
 
 # use nara-wpe and beamformit to enhance multichannel misp data
 # notice:make sure you install nara-wpe and beamformit and you need to compile BeamformIt with the kaldi script install_beamformit.sh 
-if [ $stage -eq -1 ]; then
+if [ $stage -le -1 ]; then
   for x in dev train ; do
     if [[ ! -f ${enhancement_dir}/audio/$x.done ]]; then
       local/enhancement.sh --stage 0 --python_path $python_path --beamformit_path $beamformit_path \
@@ -65,7 +65,7 @@ fi
 ###########################################################################
 
 # download DaCiDian raw resources, convert to Kaldi lexicon format
-if [ $stage -eq 0 ]; then
+if [ $stage -le 0 ]; then
   local/prepare_dict.sh --python_path $python_path $dict_dir || exit 1;
 fi
 
@@ -73,7 +73,7 @@ fi
 # prepare audio data
 ###########################################################################
 
-if [ $stage -eq 1 ]; then
+if [ $stage -le 1 ]; then
   for x in dev train; do
     for y in far; do
       ${python_path}python local/prepare_data.py -nj 1 feature/misp2022_avsr/${x}_${y}_audio_wpe/beamformit/wav/'*.wav' \
@@ -91,18 +91,18 @@ fi
 ###########################################################################
 
 # L
-if [ $stage -eq 2 ]; then
+if [ $stage -le 2 ]; then
   utils/prepare_lang.sh --position-dependent-phones false \
     $dict_dir "$oovSymbol" data/local/lang data/lang  || exit 1;
 fi
 
 # arpa LM
-if [ $stage -eq 3 ]; then
+if [ $stage -le 3 ]; then
   local/train_lms_srilm.sh --train-text data/train_far_audio/text --dev-text data/dev_far_audio/text --oov-symbol "$oovSymbol" data/ data/srilm
 fi
 
 # prepare lang_test
-if [ $stage -eq 4 ]; then
+if [ $stage -le 4 ]; then
   utils/format_lm.sh data/lang data/srilm/lm.gz data/local/dict/lexicon.txt data/lang_test
 fi
 
@@ -111,7 +111,7 @@ mkdir -p exp
 ###########################################################################
 # feature extraction
 ###########################################################################
-if [ $stage -eq 5 ]; then
+if [ $stage -le 5 ]; then
   mfccdir=mfcc
   for x in dev train; do
     for y in far; do
@@ -132,7 +132,7 @@ fi
 ###########################################################################
 # mono phone train
 ###########################################################################
-if [ $stage -eq 6 ]; then
+if [ $stage -le 6 ]; then
   for x in far; do
     steps/train_mono.sh --boost-silence $boost_sil --nj $nj --cmd "$train_cmd" data/train_${x}_audio data/lang exp/mono_${x}_audio || exit 1;
     # make graph
@@ -143,7 +143,7 @@ fi
 ###########################################################################
 # tr1 delta+delta-delta
 ###########################################################################
-if [ $stage -eq 7 ]; then
+if [ $stage -le 7 ]; then
   for x in far; do
     # alignment
     steps/align_si.sh --boost-silence $boost_sil --cmd "$train_cmd" --nj $nj data/train_${x}_audio data/lang exp/mono_${x}_audio exp/mono_${x}_audio_ali || exit 1;
@@ -157,7 +157,7 @@ fi
 ###########################################################################
 # tri2 all lda+mllt
 ###########################################################################
-if [ $stage -eq 8 ]; then
+if [ $stage -le 8 ]; then
   for x in far; do
     # alignment
     steps/align_si.sh --boost-silence $boost_sil --cmd "$train_cmd" --nj $nj data/train_${x}_audio data/lang exp/tri1_${x}_audio exp/tri1_${x}_audio_ali || exit 1;
@@ -171,7 +171,7 @@ fi
 ###########################################################################
 # tri3 all sat
 ###########################################################################
-if [ $stage -eq 9 ]; then
+if [ $stage -le 9 ]; then
   for x in far; do
     # alignment
     steps/align_fmllr.sh --boost-silence $boost_sil --cmd "$train_cmd" --nj $nj data/train_${x}_audio data/lang \
@@ -203,7 +203,7 @@ fi
 ###########################################################################
 # segment wav to pt
 ###########################################################################
-if [ $stage -eq 10 ]; then
+if [ $stage -le 10 ]; then
   for x in dev train ; do
     for y in far ; do
       data_dir=data/${x}_${y}_audio
@@ -222,7 +222,7 @@ fi
 ###########################################################################
 # prepare video data
 ###########################################################################
-if [ $stage -eq 11 ]; then
+if [ $stage -le 11 ]; then
   for x in dev train; do
     for y in far; do
       ${python_path}python local/prepare_data.py -nj 1 released_data/misp2022_avsr/${x}_${y}_video/mp4/'*.mp4' \
@@ -238,7 +238,7 @@ fi
 ###########################################################################
 # segment video roi to pt
 ###########################################################################
-if [ $stage -eq 12 ]; then
+if [ $stage -le 12 ]; then
   for x in dev train; do
     for y in far ; do
       data_dir=data/${x}_${y}_video
@@ -258,15 +258,15 @@ fi
 ###########################################################################
 # prepare json file for DNN training
 ###########################################################################
-if [ $stage -eq 13 ]; then
+if [ $stage -le 13 ]; then
   ${python_path}python local/index_file2json.py -s 0
 fi
 
-if [ $stage -eq 14 ]; then
+if [ $stage -le 14 ]; then
   CUDA_VISIBLE_DEVICES=3 ${python_path}python local/feature_cmvn.py 0
 fi
 
-if [ $stage -eq 15 ]; then
+if [ $stage -le 15 ]; then
   num_targets=$(tree-info exp/tri3_far_audio/tree |grep num-pdfs|awk '{print $2}')
   echo $num_targets
 fi
@@ -275,7 +275,7 @@ fi
 # DNN training
 ###########################################################################
 
-if [ $stage -eq 16 ]; then
+if [ $stage -le 16 ]; then
   # you can add your submission script and the training script is as follows:
   # bash submit.sh --pn 1-3 --pd avsr_far --numg 4 --gputype TeslaV100-PCIE-12GB --logfile submit_log/1_3.log "run_gpu.sh 1_3 4"
   agi=0,1,2,3
@@ -296,7 +296,7 @@ fi
 # Notice: you need to modify the path of the RTTM file!
 ###########################################################################
 
-if [ $stage -eq 17 ]; then
+if [ $stage -le 17 ]; then
   for x in dev; do
     for y in far; do
       # The path of the RTTM file
@@ -318,7 +318,7 @@ fi
 # segment audio and video data
 ###########################################################################
 
-if [ $stage -eq 18 ]; then
+if [ $stage -le 18 ]; then
   for x in dev ; do
     for y in far ; do
       data_dir=data/${x}_${y}_audio_inference
@@ -334,7 +334,7 @@ if [ $stage -eq 18 ]; then
   done
 fi
 
-if [ $stage -eq 19 ]; then
+if [ $stage -le 19 ]; then
   for x in dev; do
     for y in far ; do
       data_dir=data/${x}_${y}_video_inference
@@ -354,7 +354,7 @@ fi
 ###########################################################################
 # prepare json file for DNN prediction
 ###########################################################################
-if [ $stage -eq 20 ]; then
+if [ $stage -le 20 ]; then
   ${python_path}python local/index_file2json.py -s 1
 fi
 
@@ -362,7 +362,7 @@ fi
 # DNN prediction
 ###########################################################################
 
-if [ $stage -eq 21 ]; then
+if [ $stage -le 21 ]; then
   agi=0,1,2,3
   gpu_num=`echo ${agi//,/} | wc -L`
   CUDA_VISIBLE_DEVICES=$agi \
@@ -375,7 +375,7 @@ fi
 # decode
 ###########################################################################
 
-if [ $stage -eq 22 ]; then
+if [ $stage -le 22 ]; then
   for x in 1_3; do
     for y in dev_inference; do
       local/decode_score_from_posteriors.sh --python_path $python_path --exp_root exp --predict_data ${y} --predict_item posteriori --used_model -1 \
@@ -390,7 +390,7 @@ fi
 # Caculate CER(Global Speaker ID)
 # Notice: copy the result_decode.txt file! 
 ###########################################################################
-if [ $stage -eq 23 ]; then
+if [ $stage -le 23 ]; then
   for x in dev ; do
     for y in far ; do
       # copy exp/1_3_*/predict_best_dev_inference/result_*/result_decode.txt to data/dev_far_audio/result_decode.txt
@@ -405,12 +405,12 @@ fi
 # Caculate cpCER(Local Speaker ID)
 # Notice: The directory contains files for each session!
 ###########################################################################
-if [ $stage -eq 24 ]; then
-  for x in dev ; do
-    for y in far ; do
-      result_decode_directory=data/${x}_${y}_audio/Result
-      text_directory=data/${x}_${y}_audio/Ground_Truth
-      ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory
-    done
-  done
-fi
+# if [ $stage -le 24 ]; then
+#   for x in dev ; do
+#     for y in far ; do
+#       result_decode_directory=data/${x}_${y}_audio/Result
+#       text_directory=data/${x}_${y}_audio/Ground_Truth
+#       ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory
+#     done
+#   done
+# fi
