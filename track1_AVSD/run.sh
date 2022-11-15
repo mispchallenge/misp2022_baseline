@@ -16,7 +16,7 @@ cat /export/corpus/slwu/rttm/train_combined/*.rttm > scp_dir/train_far_RTTM.rttm
 lip_train_scp=scp_dir/train_far.lip.scp                                                    # A file pointing to the training data lip ROIs
 rttm_train=scp_dir/train_far_RTTM.rttm                                                     # The oracle_RTTM file combining all training data sessions
 
-find detection_roi/dev/far/lip | grep htk > scp_dir/${set}_far.lip.scp     # Find the extracted lip ROIs (data_prepare.sh is required first)
+find detection_roi/dev/far/lip | grep htk > scp_dir/dev_far.lip.scp     # Find the extracted lip ROIs (data_prepare.sh is required first)
 cat /export/corpus/misp2022/Released/rttm/dev_new_combined/*.rttm > scp_dir/dev_far_RTTM.rttm  # Connect the dev rttm files to one file
 lip_dev_scp=scp_dir/dev_far.lip.scp                                        # A file pointing to the lip ROIs
 rttm_dev=scp_dir/dev_far_RTTM.rttm                                         # The oracle_RTTM file combining all sessions
