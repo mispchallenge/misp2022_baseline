@@ -2,7 +2,7 @@
 ![Baseline_System](https://user-images.githubusercontent.com/88126124/201823221-47cad24f-a2a0-401a-a814-766ab927f88d.png)
 Fig.1. The illustration of network structure
 
-Fig. 1 shows the baseline AVDR system, which consists of an AVSD module followed by an AVSR module. The AVSD module also serves as the baseline system for Track 1. In this section, we elaborate the architecture and training process of the AVSD and AVSR modules, and provide the details about joining the AVSD and AVSR modules for decoding.
+Fig. 1 shows the baseline AVDR system, which consists of an AVSD module followed by an AVSR module. The AVSD module also serves as the baseline system for Track 1. We elaborate the architecture and training process of the AVSD and AVSR modules, and provide the details about joining the AVSD and AVSR modules for decoding.
 
 ## Data preparation
 - **Speech enhancement** 
