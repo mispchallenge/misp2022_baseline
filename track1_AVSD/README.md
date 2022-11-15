@@ -30,7 +30,7 @@ parameters and train the audio network and audio-visual decoding block on synchr
 |   VSD      | 6.64 |   8.17 |    3.89  | 18.69 |
 |   **AVSD**     | **4.01** |   **5.86** |    **3.22**  | **13.09** |
 
-We use Diarization error rate (DER) as the evaluation index. The above results are measured on the far-field audio and video. For the ASD system, we use the [VBx method](https://github.com/BUTSpeechFIT/VBx). For the VSD system, we use the result from the visual embedding module. And the AVSD system is our method. At the same time, this AVSD result also serves as the baseline result of the MISP2022 Challenge Track 1 in development set. The baseline results of the evaluation set will be published together with the data according to the schedule.
+We use Diarization error rate (DER) as the evaluation index. The above results are measured on the far-field audio and video. For the ASD system, we use the [VBx method](https://github.com/BUTSpeechFIT/VBx). For the VSD system, we use the result from the visual embedding module. And the AVSD system is our method. At the same time, **this AVSD result also serves as the baseline result of the MISP2022 Challenge Track 1 in development set. The baseline results of the evaluation set will be published together with the data according to the schedule.**
 
 # Quick start
 
