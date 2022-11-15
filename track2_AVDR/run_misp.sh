@@ -411,7 +411,7 @@ fi
 #       result_decode_directory=data/${x}_${y}_audio/Result
 #       text_directory=data/${x}_${y}_audio/Ground_Truth
 #       score_file=data/${x}_${y}_audio/score.txt
-#       ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory -f $score_file=data/${x}_${y}_audio/score.txt
+#       ${python_path}python tool/cpcer.py -s $result_decode_directory -r $text_directory -f $score_file
 #     done
 #   done
 # fi
