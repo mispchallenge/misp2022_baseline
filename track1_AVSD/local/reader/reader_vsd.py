@@ -222,7 +222,10 @@ class myDataset(Dataset):
                 silence_start = c_end
                 if c_start < start:
                     if c_end < end:
-                        video_fea[:c_end-start, ...] = HTK.readHtk_start_end3D(s, start-c_start, c_end-c_start)
+                        try:
+                            video_fea[:c_end-start, ...] = HTK.readHtk_start_end3D(s, start-c_start, c_end-c_start)
+                        except:
+                            print(cur_video_path,s,start,c_start,end,c_end)
                     else:
                         video_fea[:end-start, ...] = HTK.readHtk_start_end3D(s, start-c_start, end-c_start)
                 else:
