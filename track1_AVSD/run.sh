@@ -91,7 +91,7 @@ if [ $stage -le 4 ]; then  # AVSD training
 
     python local/train_AVSD.py --project AVSD_MISP2022_Far \
                         --train_audio_fea_dir fbank/HTK/misp_train_cmn_slide \
-                        --train_speaker_embedding $ivector_dir/ivectors_misp_train/ivectors_spk.txt \
+                        --train_speaker_embedding $ivector_dir/ivectors_misp_train_oracle/ivectors_spk.txt \
                         --train_video_fea_scp scp_dir/train.lip.embedding.scp \
                         --rttm_train_path $rttm_train \
                         --audio_type $audio_type
@@ -120,7 +120,7 @@ vsd_embedding_output_dir=exp/result_vsd/$set/vemb
 vsd_output_rttm_dir=exp/result_vsd/$set/rttm
 
 ivector_dir=exp/nnet3_cnceleb_ivector  # ivector output path
-ivector_train=$ivector_dir/ivectors_misp_train/ivectors_spk.txt  # ivector of training data, this can be replace with the training set ivector you extracted in stage 2
+ivector_train=$ivector_dir/ivectors_misp_train/ivectors_spk.txt  # ivector of training data, this can be replace with the training set ivector you extracted in stage 3
 
 avsd_model_path=model/pretrained/av_diarization_3.model   # AVSD model
 avsd_prob_dir=exp/result_avsd/$data/prob
