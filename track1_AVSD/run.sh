@@ -74,10 +74,17 @@ if [ $stage -le 3 ]; then  # Audio and speaker embedding extract
     
     awk '{print $1,$1}' data/misp_train/wav.scp > data/misp_train/utt2spk
     utils/fix_data_dir.sh data/misp_train
-
+    
+    # Add 6-channel names to the rttm file to match the wav.scp
+    rttm_train_ch=scp_dir/train_far_RTTM-ch.rttm
+    touch $rttm_train_ch
+    python local/rttm_change.py --rttm_train $rttm_train \
+                                --rttm_train_ch $rttm_train_ch \
+                                --audio_type $audio_type
+    
     # Extract audio feature
     local/extract_feature.sh --nj 16 --ivector_dir $ivector_dir --data misp_train \
-            --rttm $rttm_train --max_speaker 6 --affix _oracle
+            --rttm $rttm_train_ch --max_speaker 6 --affix _oracle
 
 fi
 
