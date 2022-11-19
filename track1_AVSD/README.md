@@ -34,7 +34,6 @@ We use Diarization error rate (DER) as the evaluation index. The above results a
 
 # Quick start
 
- (The code is being updated continuously)
 
 - **Add file execution permissions**
 ```
