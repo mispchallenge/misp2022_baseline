@@ -113,7 +113,7 @@ The lip ROI and ivector of the training set will be used in the decoding process
   
   opencv-python
   
-  eniops
+  einops
   
   scipy
   
