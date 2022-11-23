@@ -97,6 +97,16 @@ bash run.sh
 ```
 The lip ROI and ivector of the training set will be used in the decoding process. So you need to use stage2 of `data_prepare.sh` to extract the lip ROI of the training set, and use stage 3 of `run.sh` to extract the ivector of the training set. We have prepared the [ivector](./exp/nnet3_cnceleb_ivector/ivectors_misp_train/) of the training set. You can directly use it.
 
+- **Evaluation script**
+
+The method of calculating DER has been integrated in `run.sh`
+
+If you only need to evaluate, you can execute the following command
+```
+bash local/analysis_diarization.sh AVSD Evaluation dev ref.rttm sys.rttm | grep ALL
+(The ref.rttm is the oracle rttm file and the sys.rttm is your result)
+```
+
 ## **Requirments**
 
 - Kaldi
