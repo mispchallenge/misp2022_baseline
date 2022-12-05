@@ -51,7 +51,6 @@ data_roi=data/local/roi
 # use nara-wpe and beamformit to enhance multichannel misp data
 # notice:make sure you install nara-wpe and beamformit and you need to compile BeamformIt with the kaldi script install_beamformit.sh 
 if [ $stage -le -1 ]; then
-  awk '{print $1}' $dict_dir/lexicon.txt | sort | uniq | awk '{print $1,99}'> $dict_dir/word_seg_vocab.txt
   for x in dev train ; do
     if [[ ! -f ${enhancement_dir}/audio/$x.done ]]; then
       local/enhancement.sh --stage 0 --python_path $python_path --beamformit_path $beamformit_path \
@@ -75,6 +74,7 @@ fi
 ###########################################################################
 
 if [ $stage -le 1 ]; then
+  awk '{print $1}' $dict_dir/lexicon.txt | sort | uniq | awk '{print $1,99}'> $dict_dir/word_seg_vocab.txt
   for x in dev train; do
     for y in far; do
       ${python_path}python local/prepare_data.py -nj 1 feature/misp2022_avsr/${x}_${y}_audio_wpe/beamformit/wav/'*.wav' \
