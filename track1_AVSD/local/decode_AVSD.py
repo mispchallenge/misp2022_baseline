@@ -38,7 +38,7 @@ def main(args):
     if not os.path.exists(args.prob_dir+"/av_sd"):
             os.makedirs(args.prob_dir+"/av_sd")
     label_train = Label_Generate_From_RTTM(args.rttm_train)
-    dataset_dev = Audio_AEmbedding_Video_Worse_Data_Decode_Reader(args.fbank_dir, args.ivector_decode, args.lip_decode_scp, args.ivector_train, args.lip_train_scp, label_train, min_speaker=2, max_speaker=6, max_utt_durance=800, frame_shift=600, discard_video=args.discard_rate/100.)
+    dataset_dev = Audio_AEmbedding_Video_Worse_Data_Decode_Reader(args.fbank_dir, args.ivector_decode, args.lip_decode_scp, args.ivector_train, args.lip_train_scp, label_train, min_speaker=2, max_speaker=6, max_utt_durance=200, frame_shift=150, discard_video=args.discard_rate/100.)
     dataloader_dev = torch.utils.data.DataLoader(dataset_dev, 
                             collate_fn=decoder_collate_fn,
                             batch_size=args.minibatchsize,
